@@ -8,8 +8,8 @@ import { usePlacesStore } from '@/stores/places'
 
 const store = usePlacesStore()     
 
-onMounted(() => {                                      // ← добавь
-  store.searchLocation('Amsterdam')
+onMounted(() => {                                      
+  store.searchLocation('Warsaw') // default search to show something on the map on first load
 })
 </script>
 

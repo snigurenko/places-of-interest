@@ -13,14 +13,14 @@ export function useMap(container: Ref<HTMLElement | null>) {
     map.value = new mapboxgl.Map({
       container: container.value,
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [4.9, 52.37],
-      zoom: 13
+      center: [21.0122, 52.2297], // default to Warsaw
+      zoom: 17
     })
     map.value.addControl(new mapboxgl.NavigationControl(), 'top-right')
   })
 
   function flyTo(lon: number, lat: number): void {
-    map.value?.flyTo({ center: [lon, lat], zoom: 13, duration: 1500 })
+    map.value?.flyTo({ center: [lon, lat], zoom: 16, duration: 1500 })
   }
 
   function setMarkers(places: Place[], onClickCallback: (xid: string) => void): void {

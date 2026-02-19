@@ -24,6 +24,7 @@ export async function fetchPlaces(lat: number, lon: number): Promise<Place[]> {
       lon,
       lat,
       limit: 50,
+      rate: 2,  
       format: 'json'
     },
     headers
