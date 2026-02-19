@@ -17,7 +17,6 @@
     </div>
 
     <div v-else-if="!store.hasResults" class="empty">
-      <span>🗺️</span>
       <p>Search for a location to discover nearby places</p>
     </div>
 

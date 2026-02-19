@@ -33,7 +33,9 @@ export interface PlaceDetail {
     height: number
     width: number
   }
-
+  wikipedia_extracts?: {
+    text: string
+  }
   url?: string
   point: {
     lon: number
@@ -43,8 +45,8 @@ export interface PlaceDetail {
 
 export interface PlacesState {
   location: GeoLocation | null
-  loading: boolean
-  error: string | null
   places: Place[]
   selectedPlace: PlaceDetail | null
+  loading: boolean
+  error: string | null
 }

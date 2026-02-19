@@ -2,6 +2,7 @@
 import MapView from '../components/MapView.vue'
 import Search from '@/components/Search.vue'
 import PlacesList from '@/components/PlacesList.vue'
+import PlaceDetailModal from '@/components/PlaceDetailModal.vue'
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import PlacesList from '@/components/PlacesList.vue'
     <main class="map-area">
       <MapView />
     </main>
+    <PlaceDetailModal />
   </div>
 </template>
 

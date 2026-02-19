@@ -23,6 +23,7 @@ export async function fetchPlaces(lat: number, lon: number): Promise<Place[]> {
       radius: 10000,
       lon,
       lat,
+      limit: 50,
       format: 'json'
     },
     headers

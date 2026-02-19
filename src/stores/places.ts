@@ -40,5 +40,9 @@ export const usePlacesStore = defineStore('places', {
         this.error = 'Could not load place details.'
       }
     },
+
+    clearSelectedPlace(): void {
+      this.selectedPlace = null
+    }
   }
 })
