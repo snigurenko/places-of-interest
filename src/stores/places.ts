@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { geocodeLocation, fetchPlaces } from '@/services/mapService'
+import { geocodeLocation, fetchPlaces, fetchPlaceDetails } from '@/services/mapService'
 import type { PlacesState } from '@/types'
 
 export const usePlacesStore = defineStore('places', {
@@ -12,10 +12,11 @@ export const usePlacesStore = defineStore('places', {
   }),
 
   getters: {
+    hasResults: (state): boolean => state.places.length > 0,
     totalPlaces: (state): number => state.places.length
   },
 
-   actions: {
+  actions: {
     async searchLocation(locationName: string): Promise<void> {
       this.loading = true
       this.error = null
@@ -31,6 +32,13 @@ export const usePlacesStore = defineStore('places', {
         this.loading = false
       }
     },
-  }
 
+    async selectPlace(xid: string): Promise<void> {
+      try {
+        this.selectedPlace = await fetchPlaceDetails(xid)
+      } catch {
+        this.error = 'Could not load place details.'
+      }
+    },
+  }
 })
