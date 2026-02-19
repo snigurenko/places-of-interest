@@ -1,11 +1,9 @@
 interface ImportMetaEnv {
+  readonly VITE_RAPIDAPI_KEY: string
   readonly VITE_MAPBOX_TOKEN: string
-  readonly VITE_OPENTRIPMAP_KEY: string
+  readonly BASE_URL: string  // ← добавь эту строку
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
-// TODO: add after create accoutns
-VITE_MAPBOX_TOKEN=your_token_here
-VITE_OPENTRIPMAP_KEY=your_key_here

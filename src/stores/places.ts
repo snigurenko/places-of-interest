@@ -1,12 +1,10 @@
-import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { geocodeLocation, fetchPlaces, fetchPlaceDetails } from '@/services/mapService'
+import type { PlacesState } from '@/types'
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
+export const usePlacesStore = defineStore('places', {
+  state: (): PlacesState => ({
+    location: null,
+  }),
 
-  return { count, doubleCount, increment }
 })
