@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import MapView from '../components/MapView.vue'
 import Search from '@/components/Search.vue'
+import PlacesList from '@/components/PlacesList.vue'
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import Search from '@/components/Search.vue'
     <div>
       <div class="sidebar">
         <Search />
+        <PlacesList />
       </div>
     </div>
     <main class="map-area">
