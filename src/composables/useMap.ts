@@ -14,7 +14,7 @@ export function useMap(container: Ref<HTMLElement | null>) {
       container: container.value,
       style: 'mapbox://styles/mapbox/streets-v12',
       center: [4.9, 52.37],
-      zoom: 14
+      zoom: 13
     })
     map.value.addControl(new mapboxgl.NavigationControl(), 'top-right')
   })

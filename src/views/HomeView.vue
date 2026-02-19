@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import MapView from '../components/MapView.vue'
+import { onMounted } from 'vue'
 import Search from '@/components/Search.vue'
 import PlacesList from '@/components/PlacesList.vue'
+import MapView from '@/components/MapView.vue'
 import PlaceDetailModal from '@/components/PlaceDetailModal.vue'
+import { usePlacesStore } from '@/stores/places'
+
+const store = usePlacesStore()     
+
+onMounted(() => {                                      // ← добавь
+  store.searchLocation('Amsterdam')
+})
 </script>
 
 <template>
   <div class="home">
-    <div>
-      <div class="sidebar">
-        <Search />
-        <PlacesList />
-      </div>
-    </div>
+    <aside class="sidebar">
+      <Search />
+      <PlacesList />
+    </aside>
     <main class="map-area">
       <MapView />
     </main>
@@ -21,12 +27,9 @@ import PlaceDetailModal from '@/components/PlaceDetailModal.vue'
 </template>
 
 <style scoped>
-.home {
-  --sidebar-width: 320px;
-  display: flex; height: 100vh; overflow: hidden;
-}
+.home { display: flex; height: 100vh; overflow: hidden; }
 .sidebar {
-  width: var(--sidebar-width); flex-shrink: 0; display: flex; flex-direction: column;
+  width: 320px; flex-shrink: 0; display: flex; flex-direction: column;
   background: white; box-shadow: 2px 0 12px rgba(0,0,0,0.08); z-index: 10;
 }
 .map-area { flex: 1; }
