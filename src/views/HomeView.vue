@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import MapView from '../components/MapView.vue'
+import Search from '@/components/Search.vue'
 </script>
 
 <template>
   <div class="home">
+    <div>
+      <div class="sidebar">
+        <Search />
+      </div>
+    </div>
     <main class="map-area">
       <MapView />
     </main>
