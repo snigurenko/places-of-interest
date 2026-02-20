@@ -18,19 +18,33 @@ export async function geocodeLocation(name: string): Promise<GeoLocation> {
 }
 
 export async function fetchPlaces(lat: number, lon: number): Promise<Place[]> {
+  console.log('🔍 Fetching places for:', { lat, lon, radius: 10000 })
+  
   const { data } = await axios.get(`${BASE_URL}/places/radius`, {
     params: {
       radius: 10000,
       lon,
       lat,
-      limit: 50,
-      rate: 2,  
+      // limit: 200, // use it to see more places in larges cities, but beware of rate limits
+      // rate: 1, 
       format: 'json'
     },
     headers
   })
+  // I am gonna put this logs to be shure that API returns reasonable data 
+  // and to get a sense of distance distribution, because it returns 0 places 
+  // in case of often requests. (as I use free subscription I supuse) 
+  console.log('📦 Total places returned:', data.length)
+  console.log('📍 Distance range:', 
+    Math.min(...data.map((p: Place) => p.dist)).toFixed(0) + 'm',
+    '—',
+    Math.max(...data.map((p: Place) => p.dist)).toFixed(0) + 'm'
+  )
+
   return data
 }
+
+
 
 export async function fetchPlaceDetails(xid: string): Promise<PlaceDetail> {
   const { data } = await axios.get(`${BASE_URL}/places/xid/${xid}`, {
