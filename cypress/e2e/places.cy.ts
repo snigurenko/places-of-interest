@@ -35,36 +35,42 @@ describe('Places of Interest App', () => {
 
   describe('Search functionality', () => {
     it('searches for a new location via Enter key', () => {
-      cy.get('.search-bar input').clear().type('Barcelona{enter}')
+      cy.get('.search-bar input').clear()
+      cy.get('.search-bar input').type('Barcelona{enter}')
       cy.get('.info', { timeout: 15000 }).should('contain.text', 'Barcelona')
       cy.get('.place-card').should('have.length.greaterThan', 0)
     })
 
     it('searches for a new location via button click', () => {
-      cy.get('.search-bar input').clear().type('Madrid')
+      cy.get('.search-bar input').clear()
+      cy.get('.search-bar input').type('Madrid')
       cy.get('.search-bar button').click()
       cy.get('.info', { timeout: 15000 }).should('contain.text', 'Madrid')
     })
 
     it('disables input and shows loader while searching', () => {
-      cy.get('.search-bar input').clear().type('Paris{enter}')
+      cy.get('.search-bar input').clear()
+      cy.get('.search-bar input').type('Paris{enter}')
       cy.get('.search-bar input').should('be.disabled')
       cy.get('.info', { timeout: 15000 }).should('be.visible')
     })
 
     it('shows skeleton placeholders while loading', () => {
-      cy.get('.search-bar input').clear().type('London{enter}')
+      cy.get('.search-bar input').clear()
+      cy.get('.search-bar input').type('London{enter}')
       cy.get('.skeleton-list').should('exist')
       cy.get('.place-card', { timeout: 15000 }).should('have.length.greaterThan', 0)
     })
 
     it('keeps search button disabled when input is blank', () => {
-      cy.get('.search-bar input').clear().type('   ')
+      cy.get('.search-bar input').clear()
+      cy.get('.search-bar input').type('   ')
       cy.get('.search-bar button').should('be.disabled')
     })
 
     it('shows error for invalid location', () => {
-      cy.get('.search-bar input').clear().type('xyznonexistent12345{enter}')
+      cy.get('.search-bar input').clear()
+      cy.get('.search-bar input').type('xyznonexistent12345{enter}')
       cy.get('.error', { timeout: 15000 }).should('be.visible')
       cy.get('.error').should('contain.text', 'not found')
     })

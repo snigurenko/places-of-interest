@@ -1,4 +1,4 @@
-import { ref, shallowRef, onMounted, onUnmounted, type Ref } from 'vue'
+import { shallowRef, onMounted, onUnmounted, type Ref } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import type { Place } from '@/types'
 
