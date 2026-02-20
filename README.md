@@ -2,6 +2,10 @@
 
 A Vue 3 application that lets you search for a city and discover nearby places of interest on an interactive map, powered by the OpenTripMap API and Mapbox GL.
 
+!! Please create .env file to provide your API keys
+VITE_MAPBOX_TOKEN=pk.ey....
+VITE_RAPIDAPI_KEY=...
+
 ## API Limitations (Free Subscription)
 
 - **Maximum 500 places per request.** The free tier caps results at 500, so for large cities not all points of interest within the 10 km radius may be returned.
