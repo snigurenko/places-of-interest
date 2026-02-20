@@ -1,6 +1,22 @@
-# places-of-interest
+# Places of Interest
 
-This template should help get you started developing with Vue 3 in Vite.
+A Vue 3 application that lets you search for a city and discover nearby places of interest on an interactive map, powered by the OpenTripMap API and Mapbox GL.
+
+## API Limitations (Free Subscription)
+
+- **Maximum 500 places per request.** The free tier caps results at 500, so for large cities not all points of interest within the 10 km radius may be returned.
+- **Rate limiting may return 0 results.** Frequent requests can cause the API to respond with an empty array. If you see no results, wait a moment and try again.
+- **Distance range for large agglomerations.** Because of the 500-place cap, in bigger cities the returned places may cover only a fraction of the 10 km search radius. Console logs are intentionally left in `mapService.ts` so you can verify the actual distance range of the data coming back.
+
+## Design Decisions & Trade-offs
+
+- **Default city: Alicante.** The app performs a search for Alicante on first load to immediately show content on the map.
+- **No i18n.** This is a test/demo application, so internationalisation was not implemented.
+- **No skeleton loading states in the detail modal.** Kept simple for the same reason.
+- **Console logs in the service layer.** Left intentionally to inspect API responses (total count, distance distribution) during development.
+- **Icons as emoji, not SVG components.** In a production app I would use SVG icons or an icon library, but for this scope emoji are sufficient.
+- **Single Pinia store without modules.** The app has a single domain (places), so splitting into store modules would be unnecessary complexity.
+- **No debounce on search input.** In a production app the search should be debounced (or throttled) to reduce API calls. Likewise, there is room for further performance optimisation when fetching and rendering large place lists. The current implementation covers the stated requirements without over-engineering.
 
 ## Recommended IDE Setup
 
