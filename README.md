@@ -5,6 +5,9 @@ A Vue 3 application that lets you search for a city and discover nearby places o
 !! Please create .env file to provide your API keys
 VITE_MAPBOX_TOKEN=pk.ey....
 VITE_RAPIDAPI_KEY=...
+links: 
+https://rapidapi.com/hub
+https://www.mapbox.com
 
 ## API Limitations (Free Subscription)
 
