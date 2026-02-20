@@ -44,6 +44,7 @@ export interface PlaceDetail {
 }
 
 export interface PlacesState {
+  searchQuery: string
   location: GeoLocation | null
   places: Place[]
   selectedPlace: PlaceDetail | null

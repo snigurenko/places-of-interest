@@ -1,26 +1,26 @@
-import { ref, onMounted, onUnmounted, type Ref } from 'vue'
+import { ref, shallowRef, onMounted, onUnmounted, type Ref } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import type { Place } from '@/types'
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN
 
 export function useMap(container: Ref<HTMLElement | null>) {
-  const map = ref<mapboxgl.Map | null>(null)
-  const markers = ref<mapboxgl.Marker[]>([])
+  const map = shallowRef<mapboxgl.Map | null>(null)
+  const markers = shallowRef<mapboxgl.Marker[]>([])
 
   onMounted(() => {
     if (!container.value) return
     map.value = new mapboxgl.Map({
       container: container.value,
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-0.4810, 38.3452], // default to Alicante, Spain
-      zoom: 17
+      center: [-0.481, 38.3452], // default to Alicante, Spain
+      zoom: 17,
     })
     map.value.addControl(new mapboxgl.NavigationControl(), 'top-right')
   })
 
   function flyTo(lon: number, lat: number): void {
-    map.value?.flyTo({ center: [lon, lat], zoom: 12, duration: 1500 })
+    map.value?.flyTo({ center: [lon, lat], zoom: 15, duration: 1500 })
   }
 
   function setMarkers(places: Place[], onClickCallback: (xid: string) => void): void {
@@ -36,7 +36,7 @@ export function useMap(container: Ref<HTMLElement | null>) {
       const popup = new mapboxgl.Popup({ offset: 25, closeButton: false }).setHTML(`
         <div class="map-popup">
           <strong>${place.name || 'Unnamed place'}</strong>
-          <span>${place.kinds?.split(',')[0].replace(/_/g, ' ') || ''}</span>
+          <span>${place.kinds?.split(',')[0]?.replace(/_/g, ' ') || ''}</span>
         </div>
       `)
 

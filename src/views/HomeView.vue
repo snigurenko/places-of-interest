@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import Search from '@/components/Search.vue'
+import Search from '@/components/SearchBlock.vue'
 import PlacesList from '@/components/PlacesList.vue'
 import MapView from '@/components/MapView.vue'
 import PlaceDetailModal from '@/components/PlaceDetailModal.vue'
 import { usePlacesStore } from '@/stores/places'
 
-const store = usePlacesStore()     
+const store = usePlacesStore()
 
-onMounted(() => {                                      
-  store.searchLocation('Alicante') // default search to show something on the map on first load
+onMounted(() => {
+  store.searchLocation(store.searchQuery)
 })
 </script>
 
@@ -27,10 +27,21 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.home { display: flex; height: 100vh; overflow: hidden; }
-.sidebar {
-  width: 320px; flex-shrink: 0; display: flex; flex-direction: column;
-  background: white; box-shadow: 2px 0 12px rgba(0,0,0,0.08); z-index: 10;
+.home {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
 }
-.map-area { flex: 1; }
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+.map-area {
+  flex: 1;
+}
 </style>
