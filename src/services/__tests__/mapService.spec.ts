@@ -23,13 +23,21 @@ describe('geocodeLocation', () => {
     )
   })
 
-  it('throws when API returns no lat', async () => {
-    mockedAxios.get.mockResolvedValue({ data: { lat: 0, lon: -0.48 } })
+  it('accepts zero as a valid coordinate', async () => {
+    const geoData = { lat: 0, lon: 0, name: 'Null Island', country: 'XX' }
+    mockedAxios.get.mockResolvedValue({ data: geoData })
+
+    const result = await geocodeLocation('Null Island')
+    expect(result).toEqual(geoData)
+  })
+
+  it('throws when API returns null lat', async () => {
+    mockedAxios.get.mockResolvedValue({ data: { lat: null, lon: -0.48 } })
     await expect(geocodeLocation('Unknown')).rejects.toThrow('Location not found')
   })
 
-  it('throws when API returns no lon', async () => {
-    mockedAxios.get.mockResolvedValue({ data: { lat: 38.34, lon: 0 } })
+  it('throws when API returns undefined lon', async () => {
+    mockedAxios.get.mockResolvedValue({ data: { lat: 38.34 } })
     await expect(geocodeLocation('Unknown')).rejects.toThrow('Location not found')
   })
 

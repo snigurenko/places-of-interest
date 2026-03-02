@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { usePlacesStore } from '../stores/places'
-import { useMap } from '../composables/useMap'
+import { usePlacesStore } from '@/stores/places'
+import { useMap } from '@/composables/useMap'
 
 const mapContainer = ref<HTMLElement | null>(null)
 const store = usePlacesStore()

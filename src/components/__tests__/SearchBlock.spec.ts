@@ -10,8 +10,10 @@ describe('SearchBlock', () => {
   })
 
   function mountComponent() {
+    const pinia = createPinia()
+    setActivePinia(pinia)
     return mount(SearchBlock, {
-      global: { plugins: [createPinia()] },
+      global: { plugins: [pinia] },
     })
   }
 
@@ -88,11 +90,11 @@ describe('SearchBlock', () => {
     expect(store.searchLocation).not.toHaveBeenCalled()
   })
 
-  it('shows error message when store has error', () => {
+  it('shows error message when store has searchError', () => {
     const pinia = createPinia()
     setActivePinia(pinia)
     const store = usePlacesStore()
-    store.$patch({ error: 'Location not found.' })
+    store.$patch({ searchError: 'Location not found.' })
 
     const wrapper = mount(SearchBlock, { global: { plugins: [pinia] } })
 

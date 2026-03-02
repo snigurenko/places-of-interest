@@ -33,7 +33,7 @@ onMounted(() => {
   overflow: hidden;
 }
 .sidebar {
-  width: 320px;
+  width: var(--sidebar-width);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { usePlacesStore } from '../stores/places'
+import { computed, ref, watch, nextTick } from 'vue'
+import { usePlacesStore } from '@/stores/places'
 
 const store = usePlacesStore()
+const modalRef = ref<HTMLElement | null>(null)
 
 const categories = computed(
   () =>
@@ -22,15 +23,38 @@ const imgStyle = computed(() => {
     ? { backgroundImage: `url(${src})`, backgroundSize: 'cover', backgroundPosition: 'center' }
     : { background: 'linear-gradient(135deg, #667eea, #764ba2)' }
 })
+
+function handleKeydown(e: KeyboardEvent): void {
+  if (e.key === 'Escape') store.clearSelectedPlace()
+}
+
+watch(
+  () => store.selectedPlace,
+  async (place) => {
+    if (place) {
+      await nextTick()
+      modalRef.value?.focus()
+    }
+  },
+)
 </script>
 
 <template>
   <Transition name="slide">
-    <div v-if="store.selectedPlace" class="overlay" @click.self="store.clearSelectedPlace">
-      <div class="modal">
-        <button class="close" @click="store.clearSelectedPlace">✕</button>
+    <div
+      v-if="store.selectedPlace"
+      class="overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Place details"
+      @click.self="store.clearSelectedPlace"
+      @keydown="handleKeydown"
+    >
+      <div ref="modalRef" class="modal" tabindex="-1">
+        <button class="close" aria-label="Close" @click="store.clearSelectedPlace">✕</button>
         <div class="img" :style="imgStyle" />
         <div class="content">
+          <p v-if="store.detailError" class="detail-error">{{ store.detailError }}</p>
           <div class="badges">
             <span v-for="cat in categories" :key="cat" class="badge">{{ cat }}</span>
           </div>
@@ -62,7 +86,7 @@ const imgStyle = computed(() => {
   z-index: 1000;
   display: flex;
   align-items: flex-end;
-  padding-left: 320px;
+  padding-left: var(--sidebar-width);
 }
 .modal {
   background: white;
@@ -128,6 +152,11 @@ h2 {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+.detail-error {
+  margin: 0 0 12px;
+  font-size: 13px;
+  color: #ef4444;
 }
 .link {
   font-size: 14px;

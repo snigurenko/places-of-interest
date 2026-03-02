@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 import { geocodeLocation, fetchPlaces, fetchPlaceDetails } from '@/services/mapService'
 import type { PlacesState } from '@/types'
@@ -11,7 +12,8 @@ export const usePlacesStore = defineStore('places', {
     places: [],
     selectedPlace: null,
     loading: false,
-    error: null,
+    searchError: null,
+    detailError: null,
   }),
 
   getters: {
@@ -22,7 +24,7 @@ export const usePlacesStore = defineStore('places', {
   actions: {
     async searchLocation(locationName: string): Promise<void> {
       this.loading = true
-      this.error = null
+      this.searchError = null
       this.places = []
       this.selectedPlace = null
       try {
@@ -33,39 +35,39 @@ export const usePlacesStore = defineStore('places', {
         const seen = new Set<string>()
 
         this.places = allPlaces.filter((place) => {
-          // remove places without valid coordinates
-          if (!place.point?.lat || !place.point?.lon) return false
+          if (place.point?.lat == null || place.point?.lon == null) return false
 
-          // remove places that are essentially the city center (same coordinates as geocoded location)
           const isCityCenter =
             Math.abs(place.point.lat - geo.lat) < 0.0001 &&
             Math.abs(place.point.lon - geo.lon) < 0.0001
           if (isCityCenter) return false
 
-          // remove duplicates based on rounded coordinates (4 decimal places ≈ 10 meters)
           const key = `${place.point.lat.toFixed(4)},${place.point.lon.toFixed(4)}`
           if (seen.has(key)) return false
           seen.add(key)
 
           return true
         })
-      } catch {
-        this.error = 'Location not found. Please try a different name.'
+      } catch (e) {
+        if (axios.isCancel(e)) return
+        this.searchError = 'Location not found. Please try a different name.'
       } finally {
         this.loading = false
       }
     },
 
     async selectPlace(xid: string): Promise<void> {
+      this.detailError = null
       try {
         this.selectedPlace = await fetchPlaceDetails(xid)
       } catch {
-        this.error = 'Could not load place details.'
+        this.detailError = 'Could not load place details.'
       }
     },
 
     clearSelectedPlace(): void {
       this.selectedPlace = null
+      this.detailError = null
     },
   },
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePlacesStore } from '../stores/places'
+import { usePlacesStore } from '@/stores/places'
 
 const store = usePlacesStore()
 
@@ -21,12 +21,16 @@ function handleSearch(): void {
         :disabled="store.loading"
         @keyup.enter="handleSearch"
       />
-      <button :disabled="store.loading || !store.searchQuery.trim()" @click="handleSearch">
+      <button
+        aria-label="Search"
+        :disabled="store.loading || !store.searchQuery.trim()"
+        @click="handleSearch"
+      >
         <span v-if="store.loading" class="loader" />
         <span v-else>🔍</span>
       </button>
     </div>
-    <p v-if="store.error" class="error">{{ store.error }}</p>
+    <p v-if="store.searchError" class="error">{{ store.searchError }}</p>
     <p v-if="store.location && !store.loading" class="info">
       Found <strong>{{ store.totalPlaces }}</strong> places near
       <strong>{{ store.location.name }}</strong>

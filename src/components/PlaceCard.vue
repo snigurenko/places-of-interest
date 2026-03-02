@@ -12,13 +12,20 @@ const primaryCategory = computed(
 )
 const formattedDistance = computed(() => {
   const d = props.place.dist
-  if (!d) return ''
+  if (d == null) return ''
   return d >= 1000 ? `${(d / 1000).toFixed(1)} km` : `${Math.round(d)} m`
 })
 </script>
 
 <template>
-  <div class="place-card" :class="{ active: isSelected }" @click="$emit('select', place.xid)">
+  <div
+    class="place-card"
+    role="button"
+    tabindex="0"
+    :class="{ active: isSelected }"
+    @click="$emit('select', place.xid)"
+    @keydown.enter="$emit('select', place.xid)"
+  >
     <div class="place-card-header">
       <span class="category">{{ primaryCategory }}</span>
       <span class="distance">{{ formattedDistance }}</span>

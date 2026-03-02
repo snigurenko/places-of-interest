@@ -19,6 +19,7 @@ const { mapInstance, markerInstance, popupInstance, MapConstructor, MarkerConstr
     }
     const popupInstance = {
       setHTML: vi.fn().mockReturnThis(),
+      setDOMContent: vi.fn().mockReturnThis(),
     }
     const MapConstructor = vi.fn(function (this: typeof mapInstance) {
       Object.assign(this, mapInstance)
@@ -79,6 +80,7 @@ beforeEach(() => {
   markerInstance.setPopup.mockReturnThis()
   markerInstance.addTo.mockReturnThis()
   popupInstance.setHTML.mockReturnThis()
+  popupInstance.setDOMContent.mockReturnThis()
 })
 
 describe('useMap', () => {
@@ -165,14 +167,15 @@ describe('useMap', () => {
       expect(markerInstance.setLngLat).toHaveBeenCalledWith([10, 20])
     })
 
-    it('creates popup with place name', () => {
+    it('creates popup with place name using setDOMContent', () => {
       const { result } = mountComposable()
 
       result.setMarkers([makePlace({ name: 'My Castle' })], vi.fn())
 
       expect(PopupConstructor).toHaveBeenCalledWith({ offset: 25, closeButton: false })
-      const htmlArg = popupInstance.setHTML.mock.calls[0]![0] as string
-      expect(htmlArg).toContain('My Castle')
+      expect(popupInstance.setDOMContent).toHaveBeenCalledTimes(1)
+      const domContent = popupInstance.setDOMContent.mock.calls[0]![0] as HTMLElement
+      expect(domContent.querySelector('strong')?.textContent).toBe('My Castle')
     })
 
     it('uses "Unnamed place" when name is empty', () => {
@@ -180,8 +183,8 @@ describe('useMap', () => {
 
       result.setMarkers([makePlace({ name: '' })], vi.fn())
 
-      const htmlArg = popupInstance.setHTML.mock.calls[0]![0] as string
-      expect(htmlArg).toContain('Unnamed place')
+      const domContent = popupInstance.setDOMContent.mock.calls[0]![0] as HTMLElement
+      expect(domContent.querySelector('strong')?.textContent).toBe('Unnamed place')
     })
 
     it('formats kind by replacing underscores with spaces', () => {
@@ -189,8 +192,8 @@ describe('useMap', () => {
 
       result.setMarkers([makePlace({ kinds: 'historic_architecture,museums' })], vi.fn())
 
-      const htmlArg = popupInstance.setHTML.mock.calls[0]![0] as string
-      expect(htmlArg).toContain('historic architecture')
+      const domContent = popupInstance.setDOMContent.mock.calls[0]![0] as HTMLElement
+      expect(domContent.querySelector('span')?.textContent).toBe('historic architecture')
     })
 
     it('skips places without a point', () => {

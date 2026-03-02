@@ -1,1 +1,5 @@
 @import 'mapbox-gl/dist/mapbox-gl.css';
+
+:root {
+  --sidebar-width: 320px;
+}

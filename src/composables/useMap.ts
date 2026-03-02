@@ -13,7 +13,7 @@ export function useMap(container: Ref<HTMLElement | null>) {
     map.value = new mapboxgl.Map({
       container: container.value,
       style: 'mapbox://styles/mapbox/streets-v12',
-      center: [-0.481, 38.3452], // default to Alicante, Spain
+      center: [-0.481, 38.3452],
       zoom: 17,
     })
     map.value.addControl(new mapboxgl.NavigationControl(), 'top-right')
@@ -27,18 +27,26 @@ export function useMap(container: Ref<HTMLElement | null>) {
     markers.value.forEach((m) => m.remove())
     markers.value = []
 
+    if (!map.value) return
+
     places.forEach((place) => {
       if (!place.point) return
 
       const el = document.createElement('div')
       el.className = 'map-marker'
 
-      const popup = new mapboxgl.Popup({ offset: 25, closeButton: false }).setHTML(`
-        <div class="map-popup">
-          <strong>${place.name || 'Unnamed place'}</strong>
-          <span>${place.kinds?.split(',')[0]?.replace(/_/g, ' ') || ''}</span>
-        </div>
-      `)
+      const popupContent = document.createElement('div')
+      popupContent.className = 'map-popup'
+      const strong = document.createElement('strong')
+      strong.textContent = place.name || 'Unnamed place'
+      const span = document.createElement('span')
+      span.textContent = place.kinds?.split(',')[0]?.replace(/_/g, ' ') || ''
+      popupContent.appendChild(strong)
+      popupContent.appendChild(span)
+
+      const popup = new mapboxgl.Popup({ offset: 25, closeButton: false }).setDOMContent(
+        popupContent,
+      )
 
       const marker = new mapboxgl.Marker(el)
         .setLngLat([place.point.lon, place.point.lat])

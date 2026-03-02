@@ -49,5 +49,6 @@ export interface PlacesState {
   places: Place[]
   selectedPlace: PlaceDetail | null
   loading: boolean
-  error: string | null
+  searchError: string | null
+  detailError: string | null
 }
